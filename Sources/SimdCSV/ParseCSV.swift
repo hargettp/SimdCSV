@@ -59,4 +59,13 @@ public struct ParseCSV {
         
         return String(decoding: textblock, as: UTF8.self)
     }
+
+    public func getCell(row: Int, col: Int) -> String {
+        return self.getCell(idx: row * Int(numberOfColumns) + col);
+    }
+
+    public func getCellRemoveQuotes(row: Int, col: Int) -> String {
+        return self.getCellRemoveQuotes(idx: row * Int(numberOfColumns) + col);
+    }
+
 }

@@ -73,6 +73,50 @@ final class ParseCSVTests: XCTestCase {
 
         XCTAssertEqual("\"Tyler, The Creator\"", cell)
     }
+
+    func test_getCell_row_column() {
+        let simdCSV = SimdCSV()
+        let text = "Hip Hop Musician,Year of birth\r\n" +
+                   "\"Tyler, The Creator\",1991\r\n" +
+                   "Roxanne Shanté,1970\r\n" +
+                   "Roy Woods,1996\r\n" +
+                   "\"Royce da 5'9\"\"\",1977\r\n" +
+                   "                                                        "
+        let data = text.data(using: .utf8)!
+        let result = simdCSV.loadCSVData64BitPadded(csv: data, CRLF: true)
+
+        let cell1 = result.csv.getCell(row: 0, col: 1);
+
+        XCTAssertEqual("Year of birth", cell1)
+
+        let cell2 = result.csv.getCell(row: 2, col: 0);
+
+        XCTAssertEqual("Roxanne Shanté", cell2)
+    }
+
+    func test_getCellRemoveQuotes_row_column() {
+        let simdCSV = SimdCSV()
+        let text = "Hip Hop Musician,Year of birth\r\n" +
+                   "\"Tyler, The Creator\",1991\r\n" +
+                   "Roxanne Shanté,1970\r\n" +
+                   "Roy Woods,1996\r\n" +
+                   "\"Royce da 5'9\"\"\",1977\r\n" +
+                   "                                                        "
+        let data = text.data(using: .utf8)!
+        let result = simdCSV.loadCSVData64BitPadded(csv: data, CRLF: true)
+
+        let cell1 = result.csv.getCellRemoveQuotes(row: 1, col: 0);
+
+        XCTAssertEqual("Tyler, The Creator", cell1)
+
+        let cell2 = result.csv.getCellRemoveQuotes(row: 4, col: 0);
+
+        XCTAssertEqual("Royce da 5'9\"\"", cell2)
+
+        let cell3 = result.csv.getCellRemoveQuotes(row: 2, col: 1);
+
+        XCTAssertEqual("1970", cell3)
+    }
 }
 
 #endif

@@ -25,10 +25,12 @@ public struct SimdCSV {
 
     public init() {
         if #available(OSX 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *) {
-            self.log = AppleLogger()
-        } else {
-            self.log = StdOutLog()
+            if let _ = Bundle.main.bundleIdentifier {
+                self.log = AppleLogger()
+                return
+            }
         }
+        self.log = StdOutLog()
     }
 
     internal static func fillInput(ptr: UnsafeRawPointer!) -> SimdInput {

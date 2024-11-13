@@ -117,6 +117,35 @@ final class ParseCSVTests: XCTestCase {
 
         XCTAssertEqual("1970", cell3)
     }
+
+    func test_getRow() {
+        let simdCSV = SimdCSV()
+        let text = "Hip Hop Musician,Year of birth\r\n" +
+                   "\"Tyler, The Creator\",1991\r\n" +
+                   "Roxanne Shanté,1970\r\n" +
+                   "Roy Woods,1996\r\n" +
+                   "\"Royce da 5'9\"\"\",1977\r\n" +
+                   "                                                        "
+        let data = text.data(using: .utf8)!
+        let result = simdCSV.loadCSVData64BitPadded(csv: data, CRLF: true)
+        let actual = result.csv.getRow(row: 2)
+        XCTAssertEqual(["Roxanne Shanté","1970"], actual)
+    }
+
+    func test_fetchRow() {
+        let simdCSV = SimdCSV()
+        let text = "Hip Hop Musician,Year of birth\r\n" +
+                   "\"Tyler, The Creator\",1991\r\n" +
+                   "Roxanne Shanté,1970\r\n" +
+                   "Roy Woods,1996\r\n" +
+                   "\"Royce da 5'9\"\"\",1977\r\n" +
+                   "                                                        "
+        let data = text.data(using: .utf8)!
+        let result = simdCSV.loadCSVData64BitPadded(csv: data, CRLF: true)
+        var actual = Array(repeating: "", count: Int(result.csv.numberOfColumns))
+        result.csv.fetchRow(row: 2, cells: &actual)
+        XCTAssertEqual(["Roxanne Shanté","1970"], actual)
+    }
 }
 
 #endif

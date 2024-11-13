@@ -68,4 +68,16 @@ public struct ParseCSV {
         return self.getCellRemoveQuotes(idx: row * Int(numberOfColumns) + col);
     }
 
+    public func getRow(row: Int) -> [String] {
+        var cells = Array(repeating: "", count: Int(self.numberOfColumns))
+        fetchRow(row: row, cells: &cells)
+        return cells
+    }
+
+    public func fetchRow(row: Int, cells: inout [String]) {
+        for col in 0..<Int(self.numberOfColumns) {
+            cells[col] = getCell(row: row, col: col)
+        }
+    }
+
 }

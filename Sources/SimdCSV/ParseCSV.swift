@@ -15,6 +15,12 @@ public struct ParseCSV {
     public var numberOfColumns: UInt32 = 0
     public var numberOfIndices: size_t = 0
 
+    public var numberRows : UInt32 {
+        get {
+            return UInt32(numberOfIndices) / numberOfColumns
+        }
+    }
+
     fileprivate static let quote = Array("\"".utf8)[0]
 
     public init(CRLF: Bool = false,
